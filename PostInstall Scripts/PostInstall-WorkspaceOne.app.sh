@@ -9,23 +9,23 @@ LoggedInUserHome="/Users/$LoggedInUser"
 
 configureDefaultDock() {
 
-  echo "Logged in user is $LoggedInUser"
-  echo "Logged in user's home $LoggedInUserHome"
+echo "Logged in user is $LoggedInUser"
+echo "Logged in user's home $LoggedInUserHome"
 
-  if [ -e /usr/local/bin/dockutil ]
-  then dockutilVersion=$(/usr/local/bin/dockutil --version)
+if [ -e /usr/local/bin/dockutil ]
+then dockutilVersion=$(/usr/local/bin/dockutil --version)
 
-  echo "dockutil version: $dockutilVersion"
+echo "dockutil version: $dockutilVersion"
 
-  echo "Adding Downloads..."
+echo "Adding Downloads..."
 
-  /usr/local/bin/dockutil --add '/Applications/Workspace ONE.app' "$LoggedInUserHome"
+/usr/local/bin/dockutil --add '/Applications/Workspace ONE.app' "$LoggedInUserHome"
 
-  touch "$LoggedInUserHome"/Library/Preferences/com.company.docksetup.plist
+touch "$LoggedInUserHome"/Library/Preferences/com.company.docksetup.plist
 
-  else echo "dockutil not installed, skipping initial dock setup..."
+else echo "dockutil not installed, skipping initial dock setup..."
 
-    fi
+  fi
 
 }
 

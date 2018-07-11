@@ -1,32 +1,28 @@
 #!/bin/sh
 
-# A script to install PreProxy Configuration
+## A script to install a Preproxy Configuration into a location that the Preproxy.app is able to view/read. This is recommended to be installed either during Bootstrap or via a PostInstall Script / Profile. This script waits until Preproxy.app is installed.
 
-LoggedInUser=$(python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')
-LoggedInUserHome="/Users/$LoggedInUser"
+## Created by Timothy Duong
+## Version 1.0 July 2018
+## TBA: Timeout on Infinite Loop
 
-#createPreProxyFolder() {
+## While statement to loop until Preproxy.app exists in /Applications/Preproxy.app
+  while [[ ! -e /Applications/Preproxy.app ]];
+      do
+        sleep 2
+        echo "Waiting for Preproxy.app to be installed";
+    done
 
-echo "Logged in user is $LoggedInUser"
-echo "Logged in user's home $LoggedInUserHome"
+## Command to download Preproxy Config to preproxy folder and wait 2 seconds
+  echo "Copying Preproxy Configuration File to Directory"
 
-if [[ -e /Applications/Preproxy.app ]];
-then
-    echo "PreProxy Application is installed"
+      curl -o ~/Library/Group\ Containers/4EVWBBD4BP.io.github.hamstergene.preproxy/preproxy-configuration.json "https://hostserver.com/preproxy-configuration.json"
 
-  else
-    echo "PreProxy Application is not yet installed"
-    mkdir "$LoggedInUserHome/Library/Group Containers/4EVWBBD4BP.io.github.hamstergene.preproxy"
+    sleep 3
 
-fi
+## Open the Preproxy.config into Preproxy.app
+  echo "Opening Preproxy Configuration File in Preproxy.app"
 
-echo "Copying Preproxy Configuration File to Directory"
-  curl -o ~/Library/Group\ Containers/4EVWBBD4BP.io.github.hamstergene.preproxy/preproxy-configuration.json "https://s3-ap-southeast-2.amazonaws.com/telstramacos/preproxy/preproxy-configuration.json"
-
-  sleep 2
-
-/usr/bin/open -gnW -a /Applications/Preproxy.app ~/Library/Group\ Containers/4EVWBBD4BP.io.github.hamstergene.preproxy/preproxy-configuration.json
-
-#}
+      /usr/bin/open -gnW -a /Applications/Preproxy.app ~/Library/Group\ Containers/4EVWBBD4BP.io.github.hamstergene.preproxy/preproxy-configuration.json
 
 exit 0
